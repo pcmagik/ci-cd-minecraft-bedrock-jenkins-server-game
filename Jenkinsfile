@@ -52,7 +52,7 @@ pipeline {
                 script {
                     docker.image(IMAGE_NAME).inside("--network ${NETWORK_NAME}") {
                         sh 'ls -l /opt/minecraft/bedrock' // Zmiana na ls -l w ścieżce serwera, aby sprawdzić, czy pliki są obecne
-                        sh 'chmod +x bedrock_server'
+                        sh 'chmod +x bedrock_server.exe' // Zmieniono na poprawną nazwę pliku wykonywalnego
                     }
                 }
             }
