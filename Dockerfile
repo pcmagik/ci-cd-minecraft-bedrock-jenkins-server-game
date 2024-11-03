@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Instalacja wymaganych narzędzi (np. wget, unzip, curl, oraz wymagane biblioteki)
-RUN apt-get update && apt-get install -y wget unzip curl libcurl4 libssl1.1
+RUN apt-get update && apt-get install -y wget unzip curl libcurl4 libssl3
 
 # Utworzenie katalogu dla serwera Minecraft Bedrock
 WORKDIR /opt/minecraft/bedrock
