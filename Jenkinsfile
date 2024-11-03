@@ -40,12 +40,6 @@ pipeline {
             }
         }
 
-        stage('Unzip Bedrock Server') {
-            steps {
-                sh 'unzip bedrock-server.zip -d bedrock && rm bedrock-server.zip'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 // Zbuduj obraz Docker, kopiując serwer Bedrock do kontenera
