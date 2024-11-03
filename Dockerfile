@@ -13,6 +13,9 @@ COPY bedrock-server.zip .
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
 RUN unzip bedrock-server.zip && rm bedrock-server.zip
 
+# Nadanie uprawnień wykonywania plikowi serwera
+RUN chmod +x bedrock_server
+
 # Akceptacja licencji (w tym przypadku nie jest wymagana eula.txt, ale dodajemy to jako dobry przykład)
 RUN echo "eula=true" > eula.txt
 
@@ -20,4 +23,4 @@ RUN echo "eula=true" > eula.txt
 EXPOSE 19132/udp
 
 # Ustawienie zmiennej środowiskowej i uruchomienie serwera
-CMD ["/bin/bash", "-c", "LD_LIBRARY_PATH=. ./bedrock_server"]
+CMD ["./bedrock_server"]
