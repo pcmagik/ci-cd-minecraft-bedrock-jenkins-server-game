@@ -34,3 +34,5 @@ https://github.com/pcmagik/ci-cd-minecraft-bedrock-jenkins-server-game
 To dopiero początek przygody z CI/CD dla gier! 🎮
 
 #devops #jenkins #docker #cicd #minecraft #automation #oraclecloud
+
+[🇬🇧 English version of this file](README.md)
