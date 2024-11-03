@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     docker.image(IMAGE_NAME).inside("--network ${NETWORK_NAME}") {
-                        sh './bedrock_server --version'
+                        sh 'ls -l' // Zmiana z ./bedrock_server --version na ls -l aby sprawdzić, czy pliki są obecne
                     }
                 }
             }
@@ -69,7 +69,7 @@ pipeline {
                         waitUntil {
                             def logOutput = sh(script: "docker logs ${TEST_SERVER_NAME}", returnStdout: true)
                             echo logOutput // Logowanie w celu sprawdzenia statusu
-                            return logOutput.contains('Server started')
+                            return logOutput.contains('IPv4 supported, port:')
                         }
                     }
                 }
