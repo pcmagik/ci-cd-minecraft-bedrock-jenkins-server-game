@@ -59,7 +59,7 @@ print(f"Pobieranie pliku {file_name}...")
 file_response = get_response_with_retries(download_link, headers)
 
 if file_response and file_response.status_code == 200:
-    with open(file_name, 'wb') as file:
+    with open("bedrock-server.zip", 'wb') as file:
         file.write(file_response.content)
     print(f"Pomyślnie pobrano plik {file_name}")
 else:
