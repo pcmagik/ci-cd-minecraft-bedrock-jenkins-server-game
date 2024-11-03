@@ -40,17 +40,9 @@ pipeline {
             }
         }
 
-        stage('Rename Bedrock Server File') {
-            steps {
-                script {
-                    sh 'mv bedrock-server-*.zip bedrock-server.zip || true'
-                }
-            }
-        }
-
         stage('Unzip Bedrock Server') {
             steps {
-                sh 'unzip bedrock-server.zip -d bedrock && rm bedrock-server.zip'
+                sh 'unzip bedrock-server-*.zip -d bedrock && rm bedrock-server-*.zip'
             }
         }
 
