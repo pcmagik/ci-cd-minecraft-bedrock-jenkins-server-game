@@ -43,7 +43,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Zbuduj obraz Docker, kopiując serwer Bedrock do kontenera
-                sh 'docker build -t minecraft-bedrock-server:latest .'
+                sh 'docker build -t ${IMAGE_NAME} .'
             }
         }
 
@@ -69,7 +69,7 @@ pipeline {
                         waitUntil {
                             def logOutput = sh(script: "docker logs ${TEST_SERVER_NAME}", returnStdout: true)
                             echo logOutput // Logowanie w celu sprawdzenia statusu
-                            return logOutput.contains('IPv4 supported, port:')
+                            return logOutput.contains('Server started successfully')
                         }
                     }
                 }
