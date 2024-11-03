@@ -1,8 +1,8 @@
 # Używamy najnowszej wersji Ubuntu jako bazowego obrazu
 FROM ubuntu:latest
 
-# Instalacja wymaganych narzędzi (np. wget, unzip, curl)
-RUN apt-get update && apt-get install -y wget unzip curl libcurl4
+# Instalacja wymaganych narzędzi (np. wget, unzip, curl, oraz wymagane biblioteki)
+RUN apt-get update && apt-get install -y wget unzip curl libcurl4 libssl1.1
 
 # Utworzenie katalogu dla serwera Minecraft Bedrock
 WORKDIR /opt/minecraft/bedrock
@@ -19,5 +19,5 @@ RUN echo "eula=true" > eula.txt
 # Otwarcie portu Minecraft Bedrock
 EXPOSE 19132/udp
 
-# Uruchomienie serwera
-CMD ["LD_LIBRARY_PATH=.", "./bedrock_server"]
+# Ustawienie zmiennej środowiskowej i uruchomienie serwera
+CMD ["/bin/bash", "-c", "LD_LIBRARY_PATH=. ./bedrock_server"]
