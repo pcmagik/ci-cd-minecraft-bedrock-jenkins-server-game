@@ -20,8 +20,14 @@ pipeline {
 
         stage('Install Python Dependencies') {
             steps {
-                sh 'apt-get update && apt-get install -y python3-pip'
-                sh 'pip3 install selenium requests'
+                sh 'apt-get update && apt-get install -y python3-pip python3.11-venv'
+            }
+        }
+
+        stage('Create Python Virtual Environment') {
+            steps {
+                sh 'python3 -m venv venv'
+                sh './venv/bin/pip install selenium requests'
             }
         }
 
@@ -29,7 +35,7 @@ pipeline {
             steps {
                 script {
                     // Skrypt, który akceptuje warunki użytkowania i pobiera plik serwera Minecraft Bedrock
-                    sh 'python3 scripts/download_bedrock_server.py'
+                    sh './venv/bin/python scripts/download_bedrock_server.py'
                 }
             }
         }
