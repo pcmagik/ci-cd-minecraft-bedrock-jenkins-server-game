@@ -7,6 +7,8 @@ import time
 
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')  # Run in headless mode for automation
+options.add_argument('--no-sandbox')  # Bypass OS security model
+options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
