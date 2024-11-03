@@ -5,41 +5,36 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-# Konfiguracja Selenium do uruchamiania w trybie headless
-options = Options()
-options.add_argument("--headless")  # Tryb bez interfejsu graficznego
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--disable-gpu")
-options.add_argument("--remote-debugging-port=9222")
-options.add_argument("--disable-extensions")
-options.add_argument("--disable-software-rasterizer")
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')  # Run in headless mode for automation
 
-# Tworzenie instancji przeglądarki
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 try:
-    # Otwórz stronę pobierania Minecraft Bedrock
+    # Open the Minecraft Bedrock download page
     driver.get("https://www.minecraft.net/en-us/download/server/bedrock")
 
-    # Poczekaj chwilę, aby upewnić się, że strona się załadowała
+    # Wait for the page to load
     time.sleep(5)
 
-    # Kliknij przycisk akceptacji warunków, jeśli jest dostępny
+    # Click the acceptance button if available
     try:
         accept_button = driver.find_element(By.XPATH, "//a[contains(text(), 'I Agree')]")
         accept_button.click()
-        time.sleep(2)  # Poczekaj chwilę na załadowanie strony po kliknięciu
+        time.sleep(2)  # Wait for the page to load after clicking
     except Exception as e:
-        print("Przycisk akceptacji nie znaleziony, być może nie jest wymagany: ", e)
+        print("Acceptance button not found, it might not be required: ", e)
 
-    # Znajdź link do serwera i pobierz URL
+    # Find the server download link and get the URL
     download_button = driver.find_element(By.XPATH, "//a[contains(@href, 'bedrock-server')]")
     server_url = download_button.get_attribute('href')
 
-    # Wyświetl link do konsoli
-    print(f"Link do pobrania serwera: {server_url}")
+    # Print the download link to the console
+    print(f"Server download link: {server_url}")
+
+except Exception as e:
+    print("An error occurred: ", e)
 
 finally:
-    # Zamknij przeglądarkę
+    # Close the browser
     driver.quit()
