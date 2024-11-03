@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = 'https://github.com/pcmagik/ci-cd-minecraft-bedrock-server-game.git'
+        REPO = 'https://github.com/pcmagik/ci-cd-minecraft-jenkins-server-game.git'
         IMAGE_NAME = 'minecraft-bedrock-server:latest'
         NETWORK_NAME = 'jenkins'
         BACKUP_DIR = '/var/jenkins_home/minecraft-backups'
@@ -18,12 +18,18 @@ pipeline {
             }
         }
 
+        stage('Install Python Dependencies') {
+            steps {
+                sh 'apt-get update && apt-get install -y python3-pip'
+                sh 'pip3 install selenium requests'
+            }
+        }
+
         stage('Download Bedrock Server') {
             steps {
                 script {
                     // Skrypt, który akceptuje warunki użytkowania i pobiera plik serwera Minecraft Bedrock
                     sh 'python3 scripts/download_bedrock_server.py'
-                    sh './venv/bin/pip install requests selenium'
                 }
             }
         }
