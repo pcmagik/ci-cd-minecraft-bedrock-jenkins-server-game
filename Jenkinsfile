@@ -27,7 +27,7 @@ pipeline {
         stage('Create Python Virtual Environment') {
             steps {
                 sh 'python3 -m venv venv'
-                sh './venv/bin/pip install selenium requests webdriver_manager'
+                sh './venv/bin/pip install selenium requests webdriver_manager beautifulsoup4'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     // Skrypt, który akceptuje warunki użytkowania i pobiera plik serwera Minecraft Bedrock
-                    sh './venv/bin/python scripts/download_bedrock_server.py > bedrock-server.zip'
+                    sh './venv/bin/python scripts/download_bedrock_server.py'
                 }
             }
         }
