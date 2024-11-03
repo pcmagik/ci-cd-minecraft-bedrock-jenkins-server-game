@@ -8,7 +8,7 @@ W Jenkinsfile, pipeline został podzielony na kilka etapów, które ściśle wsp
 
 2. **Etap Install Python Dependencies** - Instalujemy wymagane zależności Python, w tym menedżera pakietów `pip`, aby móc uruchomić skrypty wspierające pobieranie najnowszej wersji serwera.
 
-3. **Etap Create Python Virtual Environment** - Tworzymy wirtualne środowisko Pythona, w którym instalujemy wszystkie wymagane biblioteki, takie jak `selenium`, `requests`, `webdriver_manager` oraz `beautifulsoup4`. To środowisko służy do uruchamiania skryptu pobierającego najnowszą wersję serwera.
+3. **Etap Create Python Virtual Environment** - Tworzymy wirtualne środowisko Pythona, w którym instalujemy wszystkie wymagane biblioteki, takie jak  `requests` oraz `beautifulsoup4`. To środowisko służy do uruchamiania skryptu pobierającego najnowszą wersję serwera.
 
 4. **Etap Download Bedrock Server** - Kluczowym elementem jest skrypt w Pythonie, który automatycznie akceptuje warunki użytkowania i pobiera najnowszą wersję serwera Minecraft Bedrock bez potrzeby ręcznej interwencji. Dzięki temu zawsze mamy dostęp do aktualnej wersji serwera.
 

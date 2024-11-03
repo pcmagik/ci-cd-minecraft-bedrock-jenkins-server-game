@@ -8,7 +8,7 @@ In the Jenkinsfile, the pipeline is divided into several stages that work closel
 
 2. **Stage Install Python Dependencies** - We install the required Python dependencies, including the `pip` package manager, to run the scripts that help download the latest version of the server.
 
-3. **Stage Create Python Virtual Environment** - We create a Python virtual environment where we install all the necessary libraries, such as `selenium`, `requests`, `webdriver_manager`, and `beautifulsoup4`. This environment is used to run the script that downloads the latest version of the server.
+3. **Stage Create Python Virtual Environment** - We create a Python virtual environment where we install all the necessary libraries, such as `requests` and `beautifulsoup4`. This environment is used to run the script that downloads the latest version of the server.
 
 4. **Stage Download Bedrock Server** - A key component is a Python script that automatically accepts the terms of use and downloads the latest version of the Minecraft Bedrock server without manual intervention. This ensures we always have access to the current server version.
 
