@@ -37,16 +37,16 @@ if not response:
 data = response.text
 soup = BeautifulSoup(data, 'html.parser')
 
-# Wyszukiwanie linku do pobrania pliku z serwerem Bedrock
+# Wyszukiwanie linku do pobrania pliku z serwerem Bedrock dla Linuxa
 print("Wyszukiwanie linku do pobrania...")
 download_link = None
 for a_tag in soup.find_all('a', href=True):
-    if re.search(r'bedrock-server-.*?\.zip', a_tag['href']):
+    if re.search(r'bedrockdedicatedserver/bin-linux/bedrock-server-.*?\.zip', a_tag['href']):
         download_link = a_tag['href']
         break
 
 if not download_link:
-    print("Nie znaleziono linku do pobrania Bedrock Servera.")
+    print("Nie znaleziono linku do pobrania Bedrock Servera dla Linuxa.")
     exit(1)
 
 # Uzupełnienie linku do pobrania, jeśli jest względny
