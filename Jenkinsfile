@@ -147,8 +147,8 @@ pipeline {
 
                     // Sprawdzanie dostępności portu z zewnętrznej perspektywy
                     retry(5) {
-                    if (sh(script: "nc -zvu ${prodIP} 19133", returnStatus: true) != 0) {
-                        echo "Port 19133 na adresie ${prodIP} nie jest dostępny. Próba ponowna."
+                    if (sh(script: "nc -zvu ${prodIP} 19132", returnStatus: true) != 0) {
+                        echo "Port 19132 na adresie ${prodIP} nie jest dostępny. Próba ponowna."
                         sleep(time: 10, unit: 'SECONDS')
                         error("Port 19133 nie jest dostępny, ponawiam test.")
                         }
