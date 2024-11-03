@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = 'https://github.com/pcmagik/ci-cd-minecraft-bedrock-jenkins-server-game.git'
+        REPO = 'https://github.com/pcmagik/ci-cd-minecraft-bedrock-server-game.git'
         IMAGE_NAME = 'minecraft-bedrock-server:latest'
         NETWORK_NAME = 'jenkins'
         BACKUP_DIR = '/var/jenkins_home/minecraft-backups'
