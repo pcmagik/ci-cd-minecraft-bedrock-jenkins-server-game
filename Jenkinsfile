@@ -36,8 +36,6 @@ pipeline {
                 script {
                     // Skrypt, który akceptuje warunki użytkowania i pobiera plik serwera Minecraft Bedrock
                     sh './venv/bin/python scripts/download_bedrock_server.py'
-                    // Zmiana nazwy pobranego pliku na bedrock-server.zip
-                    sh 'mv bedrock-server-*.zip bedrock-server.zip'
                 }
             }
         }
