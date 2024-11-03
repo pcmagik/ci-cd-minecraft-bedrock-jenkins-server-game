@@ -27,7 +27,7 @@ pipeline {
         stage('Create Python Virtual Environment') {
             steps {
                 sh 'python3 -m venv venv'
-                sh './venv/bin/pip install selenium requests webdriver_manager beautifulsoup4'
+                sh './venv/bin/pip install requests beautifulsoup4'
             }
         }
 
