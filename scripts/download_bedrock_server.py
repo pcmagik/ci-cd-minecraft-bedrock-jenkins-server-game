@@ -1,42 +1,67 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+import requests
+from bs4 import BeautifulSoup
+import re
 import time
 
-options = webdriver.ChromeOptions()
-options.add_argument('--headless')  # Run in headless mode for automation
-options.add_argument('--no-sandbox')  # Bypass OS security model
-options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
+# Definiowanie URL strony do pobrania Bedrock Servera
+url = "https://www.minecraft.net/pl-pl/download/server/bedrock"
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+# Nagłówki, aby symulować przeglądarkę
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}
 
-try:
-    # Open the Minecraft Bedrock download page
-    driver.get("https://www.minecraft.net/en-us/download/server/bedrock")
+# Funkcja do wielokrotnego pobierania strony w przypadku błędów
+def get_response_with_retries(url, headers, retries=5, delay=5):
+    for i in range(retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                return response
+            else:
+                print(f"Błąd pobierania strony. Kod odpowiedzi: {response.status_code}. Próba {i+1} z {retries}.")
+        except requests.exceptions.RequestException as e:
+            print(f"Błąd połączenia: {e}. Próba {i+1} z {retries}.")
+        time.sleep(delay)
+    return None
 
-    # Wait for the page to load
-    time.sleep(5)
+# Pobieranie strony z linkiem do serwera Bedrock
+print("Pobieranie strony z linkiem do serwera Bedrock...")
+response = get_response_with_retries(url, headers)
 
-    # Click the acceptance button if available
-    try:
-        accept_button = driver.find_element(By.XPATH, "//a[contains(text(), 'I Agree')]")
-        accept_button.click()
-        time.sleep(2)  # Wait for the page to load after clicking
-    except Exception as e:
-        print("Acceptance button not found, it might not be required: ", e)
+if not response:
+    print("Nie udało się pobrać strony po maksymalnej liczbie prób.")
+    exit(1)
 
-    # Find the server download link and get the URL
-    download_button = driver.find_element(By.XPATH, "//a[contains(@href, 'bedrock-server')]")
-    server_url = download_button.get_attribute('href')
+# Przetwarzanie HTML za pomocą BeautifulSoup
+data = response.text
+soup = BeautifulSoup(data, 'html.parser')
 
-    # Print the download link to the console
-    print(f"Server download link: {server_url}")
+# Wyszukiwanie linku do pobrania pliku z serwerem Bedrock
+print("Wyszukiwanie linku do pobrania...")
+download_link = None
+for a_tag in soup.find_all('a', href=True):
+    if re.search(r'bedrock-server-.*?\.zip', a_tag['href']):
+        download_link = a_tag['href']
+        break
 
-except Exception as e:
-    print("An error occurred: ", e)
+if not download_link:
+    print("Nie znaleziono linku do pobrania Bedrock Servera.")
+    exit(1)
 
-finally:
-    # Close the browser
-    driver.quit()
+# Uzupełnienie linku do pobrania, jeśli jest względny
+if download_link.startswith('/'):
+    download_link = f"https://www.minecraft.net{download_link}"
+
+# Pobieranie pliku serwera
+file_name = download_link.split('/')[-1]
+print(f"Pobieranie pliku {file_name}...")
+file_response = get_response_with_retries(download_link, headers)
+
+if file_response and file_response.status_code == 200:
+    with open(file_name, 'wb') as file:
+        file.write(file_response.content)
+    print(f"Pomyślnie pobrano plik {file_name}")
+else:
+    print(f"Błąd pobierania pliku po maksymalnej liczbie prób.")
+    exit(1)
