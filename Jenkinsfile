@@ -40,6 +40,12 @@ pipeline {
             }
         }
 
+        stage('Unzip Bedrock Server') {
+            steps {
+                sh 'unzip bedrock-server.zip -d bedrock'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 // Zbuduj obraz Docker, kopiując serwer Bedrock do kontenera
@@ -62,7 +68,7 @@ pipeline {
                 script {
                     sh "docker stop ${TEST_SERVER_NAME} || true"
                     sh "docker rm ${TEST_SERVER_NAME} || true"
-                    docker.image(IMAGE_NAME).run("-d --network ${NETWORK_NAME} -p 19133:19132/udp --name ${TEST_SERVER_NAME}")
+                    docker.image(IMAGE_NAME).run("-d --network ${NETWORK_NAME} -p 19133:19132/udp --name ${TEST_SERVER_NAME} LD_LIBRARY_PATH=. ./bedrock_server")
                     
                     // Czekamy na informację, że serwer jest gotowy
                     timeout(time: 5, unit: 'MINUTES') {
@@ -122,7 +128,7 @@ pipeline {
                     sh "docker rm ${PROD_SERVER_NAME} || true"
                     
                     // Wdrożenie na produkcję po zakończeniu testów
-                    docker.image(IMAGE_NAME).run("-d --network ${NETWORK_NAME} -p 19132:19132/udp --name ${PROD_SERVER_NAME}")
+                    docker.image(IMAGE_NAME).run("-d --network ${NETWORK_NAME} -p 19132:19132/udp --name ${PROD_SERVER_NAME} LD_LIBRARY_PATH=. ./bedrock_server")
                     
                     // Przywrócenie kopii zapasowej świata, jeśli istnieje
                     def latestBackup = sh(script: "ls -t ${BACKUP_DIR} | head -n 1", returnStdout: true).trim()
