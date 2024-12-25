@@ -9,7 +9,19 @@ pipeline {
         TEST_SERVER_NAME = 'minecraft-bedrock-server-test'
     }
 
+    options {
+        // Add cleanup before build starts by disabling automatic checkout
+        skipDefaultCheckout(true)
+    }
+
     stages {
+        // Dodaj etap czyszczenia workspace przed rozpoczęciem buildu
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: "${REPO}", credentialsId: 'global_github_ssh'
@@ -87,7 +99,8 @@ pipeline {
                         if (sh(script: "nc -zvu ${testIP} 19133", returnStatus: true) != 0) {
                             echo "Port 19133 na adresie ${testIP} nie jest dostępny. Próba ponowna."
                             sleep(time: 10, unit: 'SECONDS')
-                            error("Port 19133 nie jest dostępny, ponawiam test.")                        }
+                            error("Port 19133 nie jest dostępny, ponawiam test.")                        
+                        }
                     }
                     // Usunięcie kontenera testowego po zakończeniu testów
                     sh "docker stop ${TEST_SERVER_NAME} || true"
@@ -147,10 +160,10 @@ pipeline {
 
                     // Sprawdzanie dostępności portu z zewnętrznej perspektywy
                     retry(5) {
-                    if (sh(script: "nc -zvu ${prodIP} 19132", returnStatus: true) != 0) {
-                        echo "Port 19132 na adresie ${prodIP} nie jest dostępny. Próba ponowna."
-                        sleep(time: 10, unit: 'SECONDS')
-                        error("Port 19133 nie jest dostępny, ponawiam test.")
+                        if (sh(script: "nc -zvu ${prodIP} 19132", returnStatus: true) != 0) {
+                            echo "Port 19132 na adresie ${prodIP} nie jest dostępny. Próba ponowna."
+                            sleep(time: 10, unit: 'SECONDS')
+                            error("Port 19133 nie jest dostępny, ponawiam test.")
                         }
                     }
                 }
@@ -162,6 +175,8 @@ pipeline {
         always {
             script {
                 sh "docker rmi ${IMAGE_NAME} --force || true"
+                // Dodaj czyszczenie workspace po zakończeniu buildu
+                cleanWs()
             }
         }
         failure {
