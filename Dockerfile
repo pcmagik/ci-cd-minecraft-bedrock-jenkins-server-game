@@ -9,6 +9,7 @@ WORKDIR /opt/minecraft/bedrock
 
 # Skopiowanie pobranego pliku bedrock-server.zip do obrazu
 COPY bedrock-server.zip .
+COPY server.properties .
 
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
 RUN unzip bedrock-server.zip && rm bedrock-server.zip
