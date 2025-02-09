@@ -12,7 +12,8 @@ COPY bedrock-server.zip .
 COPY server.properties .
 
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
-RUN unzip bedrock-server.zip && rm bedrock-server.zip
+RUN unzip -o bedrock-server.zip && \
+    rm bedrock-server.zip
 
 # Nadanie uprawnień wykonywania plikowi serwera
 RUN chmod +x bedrock_server
