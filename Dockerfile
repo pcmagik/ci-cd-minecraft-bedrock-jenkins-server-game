@@ -11,6 +11,9 @@ WORKDIR /opt/minecraft/bedrock
 COPY bedrock-server.zip .
 COPY server.properties .
 
+# Upewniamy się, że plik ma odpowiednie uprawnienia
+RUN chmod 644 server.properties
+
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
 RUN unzip -o bedrock-server.zip && \
     rm bedrock-server.zip
