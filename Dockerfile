@@ -9,19 +9,11 @@ WORKDIR /opt/minecraft/bedrock
 
 # Skopiowanie pobranego pliku bedrock-server.zip do obrazu
 COPY bedrock-server.zip .
+COPY server.properties .
 
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
 RUN unzip -o bedrock-server.zip && \
     rm bedrock-server.zip
-
-# Kopiowanie i ustawienie uprawnień dla server.properties
-COPY server.properties .
-RUN chmod 644 server.properties
-
-# Weryfikacja zawartości pliku server.properties
-RUN grep "gamemode=creative" server.properties && \
-    grep "force-gamemode=true" server.properties && \
-    grep "allow-cheats=true" server.properties
 
 # Nadanie uprawnień wykonywania plikowi serwera
 RUN chmod +x bedrock_server
