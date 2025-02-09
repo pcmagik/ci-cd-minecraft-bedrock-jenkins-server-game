@@ -9,7 +9,7 @@ WORKDIR /opt/minecraft/bedrock
 
 # Skopiowanie pobranego pliku bedrock-server.zip do obrazu
 COPY bedrock-server.zip .
-COPY server.properties .
+
 
 # Rozpakowanie serwera Bedrock i usunięcie pliku .zip
 RUN unzip -o bedrock-server.zip && \
@@ -20,6 +20,8 @@ RUN chmod +x bedrock_server
 
 # Akceptacja licencji (w tym przypadku nie jest wymagana eula.txt, ale dodajemy to jako dobry przykład)
 RUN echo "eula=true" > eula.txt
+COPY server.properties .
+RUN chmod 644 server.properties
 
 # Otwarcie portu Minecraft Bedrock
 EXPOSE 19132/udp
